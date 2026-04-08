@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>FoodShare</title>
+<style>
+body{font-family:Arial;background:#f4f4f4;padding:20px;}
+.container{background:white;padding:15px;margin:10px;border-radius:10px;}
+input{display:block;margin:5px 0;padding:8px;width:100%;}
+button{padding:8px;background:orange;color:white;border:none;}
+.box{background:#eee;padding:10px;margin-top:5px;}
+.done{border-left:5px solid green;}
+</style>
+</head>
+
+<body>
+
+<h1>🍲 FoodShare</h1>
+
+<!-- DONATION -->
+<div class="container">
+<h2>Donate</h2>
+<form action="/add_donation" method="POST">
+<input name="donor" placeholder="Name" required>
+<input name="food" placeholder="Food" required>
+<input name="quantity" placeholder="Qty" required>
+<input name="location" placeholder="Location" required>
+<button type="submit">Add</button>
+</form>
+</div>
+
+<!-- REQUEST -->
+<div class="container">
+<h2>Request</h2>
+<form action="/add_request" method="POST">
+<input name="name" placeholder="Name" required>
+<input name="food" placeholder="Food" required>
+<input name="quantity" placeholder="Qty" required>
+<input name="location" placeholder="Location" required>
+<input name="contact" placeholder="Contact" required>
+<button type="submit">Request</button>
+</form>
+</div>
+
+<!-- VOLUNTEER -->
+<div class="container">
+<h2>Volunteer</h2>
+<form action="/add_volunteer" method="POST">
+<input name="name" placeholder="Name" required>
+<input name="city" placeholder="City" required>
+<input name="phone" placeholder="Phone" required>
+<button type="submit">Join</button>
+</form>
+</div>
+
+<!-- DATA -->
+<div class="container">
+<h2>Donations</h2>
+{% for d in donations %}
+<div class="box">
+🍲 {{d.food}} | {{d.quantity}} | {{d.location}}
+<a href="/delete_donation/{{loop.index0}}">❌</a>
+</div>
+{% endfor %}
+</div>
+
+<div class="container">
+<h2>Requests</h2>
+{% for r in requests %}
+<div class="box {% if r.fulfilled %}done{% endif %}">
+{{r.food}} | {{r.quantity}} | {{r.location}}
+{% if not r.fulfilled %}
+<a href="/fulfill/{{loop.index0}}">Serve</a>
+{% endif %}
+<a href="/delete_request/{{loop.index0}}">❌</a>
+</div>
+{% endfor %}
+</div>
+
+<div class="container">
+<h2>Volunteers</h2>
+{% for v in volunteers %}
+<div class="box">
+{{v.name}} | {{v.city}}
+<a href="/delete_volunteer/{{loop.index0}}">❌</a>
+</div>
+{% endfor %}
+</div>
+
+<div class="container">
+<h2>Notifications</h2>
+{% for n in notifications %}
+<div class="box">{{n}}</div>
+{% endfor %}
+</div>
+
+</body>
+</html>
